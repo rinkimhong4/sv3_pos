@@ -1,0 +1,17 @@
+const categoryController = require("../controllers/category.controller");
+
+const categories = (app) => {
+  // get
+  app.get("/api/categories", categoryController.getCategory_hong);
+  app.get("/api/categories/:id", categoryController.getCategoryByID_hong);
+
+  app.post("/api/categories/create", categoryController.createCategory_hong);
+
+  app.put("/api/categories/update/:id", categoryController.updateCategory_hong);
+  app.delete(
+    "/api/categories/delete/:id",
+    categoryController.deleteCategory_hong
+  );
+};
+
+module.exports = { categories };
