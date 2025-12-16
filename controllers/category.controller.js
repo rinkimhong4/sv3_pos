@@ -2,8 +2,15 @@ const Category = require("../models/category.model");
 
 // GET ALL
 exports.getCategory_hong = async (req, res) => {
-  const data = await Category.findAll();
-  res.json(data);
+  try {
+    const data = await Category.findAll();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error",
+      error: err.message,
+    });
+  }
 };
 
 // GET ONE DATA
@@ -77,13 +84,24 @@ exports.updateCategory_hong = async (req, res) => {
 
 // DELETE
 exports.deleteCategory_hong = async (req, res) => {
-  let category = req.body;
+  const { id } = req.params;
+  if (!Number.isInteger(Number(id)) || id <= 0) {
+    return res.status(400).json({
+      message: "ID must be a positive integer",
+    });
+  }
+
+  const existingCategory = await Category.findByPk(id);
+  if (!existingCategory) {
+    return res.status(404).json({
+      message: "Category not found",
+    });
+  }
   await Category.destroy({
     where: {
       categoryid: req.params.id,
     },
   });
-
   res.json({
     message: "Category deleted",
   });

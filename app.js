@@ -7,6 +7,9 @@ var logger = require("morgan");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 const { categories } = require("./routes/category.route");
+const { orders } = require("./routes/order.route");
+const { orderDetail } = require("./routes/order.detail.route");
+const { products } = require("./routes/product.route");
 
 var app = express();
 
@@ -19,7 +22,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+//
 categories(app);
+orders(app);
+orderDetail(app);
+products(app);
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
