@@ -4,12 +4,16 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
+// app.use(express.json()); // for parsing application/json
+// app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 const { categories } = require("./routes/category.route");
 const { orders } = require("./routes/order.route");
 const { orderDetail } = require("./routes/order.detail.route");
 const { products } = require("./routes/product.route");
+const { users } = require("./routes/users.route");
 
 var app = express();
 
@@ -17,16 +21,23 @@ var app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
+
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use("/upload", express.static("upload"));
+
+
 //
 categories(app);
 orders(app);
 orderDetail(app);
 products(app);
+users(app);
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);

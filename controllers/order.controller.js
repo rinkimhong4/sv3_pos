@@ -5,9 +5,14 @@ const User = require("../models/user.model");
 exports.getOrder_hong = async (req, res) => {
   try {
     const data = await Order.findAll();
-    res.json(data);
+    res.json({
+      statusCode: 200,
+      message: "Get Data Successfully",
+      data : data,
+    }); 
   } catch (error) {
     res.status(500).json({
+      statusCode: 500,
       message: "Server error",
       error: err.message,
     });
@@ -26,9 +31,17 @@ exports.getOrderByID_hong = async (req, res) => {
 
     const order = await Order.findByPk(id);
     if (!order) {
-      return res.status(404).json({ message: "Data not found" });
+      return res.status(404).json({
+        statusCode: 404,
+        message: "Data not found"
+      });
     }
-    res.json(order);
+    res.json({
+      statusCode: 200,
+      message: "Get Data Successfully",
+      data:
+      order
+    });
   } catch (err) {
     res.status(500).json({ message: "Server error:", err });
   }
@@ -69,8 +82,9 @@ exports.createOrder_hong = async (req, res) => {
     });
 
     res.status(201).json({
+      statusCode: 201,
       message: "Order created successfully",
-      order,
+      order: order,
     });
   } catch (err) {
     res.status(500).json({
@@ -105,7 +119,9 @@ exports.updateOrder_hong = async (req, res) => {
     );
 
     res.status(202).json({
+      statusCode: 202,
       message: "Order updated successfully",
+      order: existingOrder,
     });
   } catch (err) {
     res.status(500).json({
@@ -137,8 +153,10 @@ exports.deleteOrder_hong = async (req, res) => {
       where: { orderid: id },
     });
 
-    res.json({
+    res.status(200).json({
+      statusCode: 200,
       message: "Order deleted successfully",
+      order: existingOrder,
     });
   } catch (err) {
     res.status(500).json({

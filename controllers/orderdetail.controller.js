@@ -5,7 +5,11 @@ const Product = require("../models/product.model");
 exports.getOrderDetail_hong = async (req, res) => {
   try {
     const data = await OrderDetail.findAll();
-    res.json(data);
+    res.json({
+      statusCode: 200,
+      message: "Get Data Successfully",
+      data:data
+    });
   } catch (err) {
     res.status(500).json({
       message: "Server error",
@@ -30,7 +34,11 @@ exports.getOrderDetailByID_hong = async (req, res) => {
       return res.status(404).json({ message: "OrderDetail not found" });
     }
 
-    res.json(detail);
+    res.json({
+      statusCode: 200,
+      message: "Get Data Successfully",
+      detail : detail,
+    });
   } catch (err) {
     res.status(500).json({
       message: "Server error",
@@ -61,8 +69,10 @@ exports.createOrderDetail_hong = async (req, res) => {
       qty <= 0
     ) {
       return res.status(400).json({
+        statusCode: 400,
         message:
           "proid, orid must be integers and qty must be positive integer",
+
       });
     }
 
@@ -74,8 +84,9 @@ exports.createOrderDetail_hong = async (req, res) => {
     });
 
     res.status(201).json({
+      statusCode: 201,
       message: "OrderDetail created successfully",
-      orderDetail,
+      orderDetail : orderDetail,
     });
   } catch (err) {
     res.status(500).json({
@@ -105,7 +116,11 @@ exports.updateOrderDetail_hong = async (req, res) => {
       { where: { odid: id } }
     );
 
-    res.status(202).json({ message: "OrderDetail updated successfully" });
+    res.status(202).json({
+      statusCode: 202,
+      message: "OrderDetail updated successfully",
+      detail : detail,
+    });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }
@@ -125,9 +140,15 @@ exports.deleteOrderDetail_hong = async (req, res) => {
       return res.status(404).json({ message: "OrderDetail not found" });
     }
 
-    await OrderDetail.destroy({ where: { odid: id } });
+    await OrderDetail.destroy({
+      
+      where: { odid: id }
+    });
 
-    res.json({ message: "OrderDetail deleted successfully" });
+    res.json({
+      statusCode: 200,
+      message: "OrderDetail deleted successfully"
+    });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }

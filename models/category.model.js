@@ -13,6 +13,9 @@ const Category = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
+    categoryicon: {
+      type: DataTypes.STRING(255),
+    }
   },
   {
     tableName: "category_hong_tbl",
